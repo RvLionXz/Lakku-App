@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lakku_app/components/charts_card.dart';
 import 'package:lakku_app/components/history_list.dart';
+import 'package:lakku_app/services/data_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -10,6 +11,24 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  // Bottom Navigation
+  int _selectedIndex = 0;
+  static const TextStyle optionStyle = TextStyle(
+    fontSize: 30,
+    fontWeight: FontWeight.bold,
+  );
+  static const List<Widget> _widgetOptions = <Widget>[
+    Text("Index 0: Home", style: optionStyle),
+    Text("Index 1: Add", style: optionStyle),
+    Text("Index 2: Account", style: optionStyle),
+  ];
+
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,9 +56,10 @@ class _HomePageState extends State<HomePage> {
                           fontSize: 20,
                           fontWeight: FontWeight.w500,
                         ),
+
                       ),
                       Text(
-                        "Rp. 100.000",
+                        "Rp. $saldo",
                         style: TextStyle(
                           fontSize: 40,
                           fontWeight: FontWeight.bold,
@@ -56,8 +76,20 @@ class _HomePageState extends State<HomePage> {
             ),
           ),
         ),
+        bottomNavigationBar: BottomNavigationBar(
+          items: const <BottomNavigationBarItem>[
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.add),
+              label: 'Add',
+            ),
+            BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
+          ],
+          currentIndex: _selectedIndex,
+          selectedItemColor: Color(0xFF6665E7),
+          onTap: _onItemTapped,
+        ),
       ),
     );
   }
-
 }

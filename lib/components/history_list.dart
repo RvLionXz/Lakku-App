@@ -29,7 +29,7 @@ class _HistoryListState extends State<HistoryList> {
                     bottom: BorderSide(color: Colors.black, width: 1),
                   ),
                 ),
-                margin: EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                 child: Padding(
                   padding: const EdgeInsets.all(10.0),
                   child: Row(
