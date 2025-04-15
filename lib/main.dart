@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
+import 'pages/add_expanses.dart';
 
 void main() {
   runApp(const MyApp());
@@ -18,6 +19,9 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: HomePage(),
+      routes: {
+        '/add': (context) => AddPages(),
+      },
     );
   }
 }

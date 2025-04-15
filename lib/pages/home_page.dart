@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:lakku_app/components/charts_card.dart';
 import 'package:lakku_app/components/history_list.dart';
+import 'package:lakku_app/pages/account_pages.dart';
 import 'package:lakku_app/services/data_service.dart';
+import 'add_expanses.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -11,22 +13,11 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  // Bottom Navigation
   int _selectedIndex = 0;
-  static const TextStyle optionStyle = TextStyle(
-    fontSize: 30,
-    fontWeight: FontWeight.bold,
-  );
-  static const List<Widget> _widgetOptions = <Widget>[
-    Text("Index 0: Home", style: optionStyle),
-    Text("Index 1: Add", style: optionStyle),
-    Text("Index 2: Account", style: optionStyle),
-  ];
+  final PageController _pageController = PageController();
 
   void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
+    _pageController.jumpToPage(index);
   }
 
   @override
@@ -39,50 +30,58 @@ class _HomePageState extends State<HomePage> {
           title: Text("Lakku"),
           backgroundColor: Color(0xFFF5F5F5),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(10.0),
-          child: SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Align(
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Total Pengeluaran",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w500,
-                        ),
-
+        body: PageView(
+          controller: _pageController,
+          onPageChanged: (index) {
+            setState(() {
+              _selectedIndex = index;
+            });
+          },
+          children: [
+            Padding(
+              padding: const EdgeInsets.all(10.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Align(
+                      alignment: Alignment.centerLeft,
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Total Pengeluaran",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                          Text(
+                            "Rp. $saldo",
+                            style: TextStyle(
+                              fontSize: 40,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
                       ),
-                      Text(
-                        "Rp. $saldo",
-                        style: TextStyle(
-                          fontSize: 40,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                    SizedBox(height: 10),
+                    ChartsCard(),
+                    SizedBox(height: 10),
+                    HistoryList(),
+                  ],
                 ),
-                SizedBox(height: 10),
-                ChartsCard(),
-                SizedBox(height: 10),
-                HistoryList(),
-              ],
+              ),
             ),
-          ),
+            AddPages(),
+            AccountPages()
+          ],
         ),
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-            BottomNavigationBarItem(
-              icon: Icon(Icons.add),
-              label: 'Add',
-            ),
+            BottomNavigationBarItem(icon: Icon(Icons.add), label: 'Add'),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Account'),
           ],
           currentIndex: _selectedIndex,
