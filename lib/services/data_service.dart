@@ -17,4 +17,3 @@ double lainnyaValue = lainnya / saldo * 100;
 double mValue = double.parse(makananValue.toStringAsFixed(2));
 double tValue = double.parse(transportasiValue.toStringAsFixed(2));
 double lValue = double.parse(lainnyaValue.toStringAsFixed(2));
-
