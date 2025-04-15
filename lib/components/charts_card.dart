@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'package:lakku_app/services/data_service.dart';
 
 class ChartsCard extends StatefulWidget {
   const ChartsCard({super.key});
@@ -26,20 +25,20 @@ class _ChartsCardState extends State<ChartsCard> {
                   sections: [
                     PieChartSectionData(
                       color: Colors.blue,
-                      value: makananValue,
-                      title: '$mValue%',
+                      value: 0,
+                      title: 'a%',
                       radius: 50,
                     ),
                     PieChartSectionData(
                       color: Colors.yellow,
-                      value: transportasiValue,
-                      title: '$tValue%',
+                      value: 0,
+                      title: 'a%',
                       radius: 50,
                     ),
                     PieChartSectionData(
                       color: Colors.red,
-                      value: lainnyaValue,
-                      title: '$lValue%',
+                      value: 0,
+                      title: 'a%',
                       radius: 50,
                     ),
                   ],
@@ -65,9 +64,9 @@ class _ChartsCardState extends State<ChartsCard> {
               children: [
                 Text(""),
                 SizedBox(height: 10),
-                Text("Rp. $makanan"),
-                Text("Rp. $transportasi"),
-                Text("Rp. $lainnya"),
+                Text("Rp. "),
+                Text("Rp. "),
+                Text("Rp. "),
               ],
             ),
           ],

@@ -106,10 +106,7 @@ class _NoteState extends State<Note> {
           decoration: InputDecoration(
             labelText: "Note",
             labelStyle: TextStyle(color: Colors.grey[700], fontSize: 14),
-            suffixIcon: Icon(
-              Icons.comment_outlined,
-              color: Colors.grey[600],
-            ),
+            suffixIcon: Icon(Icons.comment_outlined, color: Colors.grey[600]),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(12),
               borderSide: BorderSide(color: Colors.grey.shade300),
@@ -128,6 +125,52 @@ class _NoteState extends State<Note> {
           style: TextStyle(fontSize: 16, color: Colors.black),
         ),
       ],
+    );
+  }
+}
+
+class NormalForm extends StatelessWidget {
+  final String label;
+  final String prefixText;
+  final IconData suffixIcon;
+  final TextEditingController controller;
+  final bool obscureText; 
+
+  const NormalForm({
+    super.key,
+    required this.label,
+    this.prefixText = '',
+    this.suffixIcon = Icons.attach_money_outlined,
+    required this.controller,
+    required this.obscureText
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        labelText: label,
+        labelStyle: TextStyle(color: Colors.grey[700], fontSize: 14),
+        prefixText: prefixText,
+        suffixIcon: Icon(suffixIcon, color: Colors.grey[600]),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade300),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(12),
+          borderSide: BorderSide(color: Colors.grey.shade400),
+        ),
+        contentPadding: EdgeInsets.symmetric(vertical: 15, horizontal: 15),
+      ),
+      keyboardType: TextInputType.number,
+      style: TextStyle(fontSize: 16, color: Colors.black),
     );
   }
 }

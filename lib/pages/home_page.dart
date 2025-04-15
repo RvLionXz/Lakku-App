@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lakku_app/components/charts_card.dart';
 import 'package:lakku_app/components/history_list.dart';
-import 'package:lakku_app/pages/account_pages.dart';
-import 'package:lakku_app/services/data_service.dart';
+import 'package:lakku_app/pages/account_page.dart';
 import 'add_expanses.dart';
 
 class HomePage extends StatefulWidget {
@@ -57,7 +56,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            "Rp. $saldo",
+                            "Rp. ",
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
