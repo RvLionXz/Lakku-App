@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lakku_app/services/expense_service.dart';
@@ -11,6 +13,61 @@ class ChartsCard extends StatefulWidget {
 }
 
 class _ChartsCardState extends State<ChartsCard> {
+  double makanan = 0;
+  double transportasi = 0;
+  double lainnya = 0;
+
+  double makananPercent = 0;
+  double transportasiPercent = 0;
+  double lainnyaPercent = 0;
+  double total = 0;
+
+  void showCharts() async {
+    ExpenseService expenseService = ExpenseService();
+    UserService userService = UserService();
+
+    final idUser = await userService.getUserId();
+
+    if (idUser != null) {
+      final expensesCategory = await expenseService.getExpenses(idUser);
+
+      makanan = 0;
+      transportasi = 0;
+      lainnya = 0;
+
+      for (var expense in expensesCategory) {
+        double amount = expense.amount ?? 0;
+
+        if (expense.category == "Makanan") {
+          makanan += amount;
+        } else if (expense.category == "Transportasi") {
+          transportasi += amount;
+        } else {
+          lainnya += amount;
+        }
+      }
+      total = makanan + transportasi + lainnya;
+      makananPercent = (makanan / total) * 100;
+      transportasiPercent = (transportasi / total) * 100;
+      lainnyaPercent = (lainnya / total) * 100;
+
+      setState(() {
+        // print("Makanan: \$${makanan.toStringAsFixed(2)}");
+        // print("Transportasi: \$${transportasi.toStringAsFixed(2)}");
+        // print("Lainnya: \$${lainnya.toStringAsFixed(2)}");
+      });
+    } else {
+      print("User ID tidak ditemukan.");
+      throw Exception("Failed to load data");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    showCharts();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -27,20 +84,20 @@ class _ChartsCardState extends State<ChartsCard> {
                   sections: [
                     PieChartSectionData(
                       color: Colors.blue,
-                      value: 10,
-                      title: 'a%',
+                      value: makanan,
+                      title: "${makananPercent.toStringAsFixed(2)}%",
                       radius: 50,
                     ),
                     PieChartSectionData(
                       color: Colors.yellow,
-                      value: 10,
-                      title: 'a%',
+                      value: transportasi,
+                      title: "${transportasiPercent.toStringAsFixed(2)}%",
                       radius: 50,
                     ),
                     PieChartSectionData(
                       color: Colors.red,
-                      value: 10,
-                      title: 'a%',
+                      value: lainnya,
+                      title: "${lainnyaPercent.toStringAsFixed(2)} %",
                       radius: 50,
                     ),
                   ],
@@ -66,9 +123,9 @@ class _ChartsCardState extends State<ChartsCard> {
               children: [
                 Text(""),
                 SizedBox(height: 10),
-                Text("Rp. "),
-                Text("Rp. "),
-                Text("Rp. "),
+                Text("Rp. $makanan"),
+                Text("Rp. $transportasi"),
+                Text("Rp. $lainnya"),
               ],
             ),
           ],

@@ -3,7 +3,7 @@ class Expenses {
   final int userId;
   final String category;
   final String description;
-  final double amount;
+  final double? amount;
   final DateTime date;
 
   Expenses({
@@ -21,7 +21,10 @@ class Expenses {
       userId: json['id_user'],
       category: json['category'],
       description: json['description'],
-      amount: json['amount'],
+      amount:
+          json['amount'] != null
+              ? double.tryParse(json['amount'].toString())
+              : null,
       date: DateTime.parse(json['date']),
     );
   }

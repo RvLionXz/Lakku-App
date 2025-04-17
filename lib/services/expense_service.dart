@@ -18,6 +18,19 @@ class ExpenseService {
     }
   }
 
+  //tes
+  Future<List<Expenses>> getExpenses(int userId) async {
+    final response = await http.get(Uri.parse("$baseUrl/expenses/$userId"));
+
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      return data.map((json) => Expenses.fromJson(json)).toList();
+    } else {
+      print("GAGAL TES : $response.statusCode");
+      throw Exception("Gagal");
+    }
+  }
+
   // Get total saldo
   Future<double?> getTotalExpenses(int userId) async {
     final response = await http.get(
