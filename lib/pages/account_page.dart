@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:lakku_app/models/users_model.dart';
+import 'package:lakku_app/services/user_service.dart';
 
 class AccountPages extends StatefulWidget {
   const AccountPages({super.key});
@@ -8,6 +10,23 @@ class AccountPages extends StatefulWidget {
 }
 
 class _AccountPagesState extends State<AccountPages> {
+  String username = "";
+
+  void loadUsername() async {
+    UserService userService = UserService();
+
+    final userData = await userService.getUsername();
+    setState(() {
+      username = userData ?? "Guest";
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadUsername();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -21,7 +40,7 @@ class _AccountPagesState extends State<AccountPages> {
               Icon(Icons.face, size: 100, color: Colors.grey.shade400),
               Text("Username"),
               Text(
-                "sipulan",
+                username,
                 style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
               ),
             ],

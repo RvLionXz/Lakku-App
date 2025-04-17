@@ -142,7 +142,7 @@ class NormalForm extends StatelessWidget {
     this.prefixText = '',
     this.suffixIcon = Icons.attach_money_outlined,
     required this.controller,
-    required this.obscureText
+    required this.obscureText,
   });
 
   @override

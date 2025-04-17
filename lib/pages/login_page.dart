@@ -55,7 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 SizedBox(height: 20),
                 NormalForm(
-                  label: "Username",
+                  label: "Email",
                   prefixText: "",
                   suffixIcon: Icons.login_outlined,
                   controller: emailController,

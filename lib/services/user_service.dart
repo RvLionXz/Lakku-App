@@ -1,9 +1,7 @@
 import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:lakku_app/models/users_model.dart';
-import 'package:lakku_app/pages/home_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
   final String baseUrl = "http://47.250.187.233:80";
@@ -23,16 +21,16 @@ class UserService {
   //Register Service
   Future<String> userRegister(
     String username,
-    String password,
     String email,
+    String password,
   ) async {
     final response = await http.post(
       Uri.parse("$baseUrl/users/register"),
       headers: {"Content-Type": "application/json"},
       body: jsonEncode({
         "username": username,
-        "password": password,
         "email": email,
+        "password": password,
       }),
     );
 
@@ -41,7 +39,6 @@ class UserService {
     } else if (response.statusCode == 400) {
       return "Gagal Registrasi, periksa kembali form registrasi!";
     } else {
-      print(response.statusCode);
       return "Registrasi gagal!";
     }
   }
@@ -55,11 +52,31 @@ class UserService {
     );
 
     if (response.statusCode == 200) {
-      print(response.statusCode);
-      return User.fromJson(jsonDecode(response.body));
+      Map<String, dynamic> responseData = jsonDecode(response.body);
+      String username = responseData['user']['username'] ?? "Guest";
+
+      // print("Username dari server: $username");
+      await saveUserData(username);
+
+      return User.fromJson(responseData['user']);
     } else {
-      print(response.statusCode);
+      // print("Login gagal. Status code: ${response.statusCode}");
       return null;
     }
+  }
+
+  //save username
+  Future<void> saveUserData(String username) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString("username", username);
+    // print("USER NAME TERSIMPAN : $username");
+  }
+
+  //get username
+  Future<String?> getUsername() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString("username");
+    // print("username nya adalah $username");
+    return username;
   }
 }
