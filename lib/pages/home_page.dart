@@ -23,7 +23,7 @@ class _HomePageState extends State<HomePage> {
     UserService userService = UserService();
 
     final idUser = await userService.getUserId();
-    print("User ID: $idUser"); // Cek apakah id_user terambil dengan benar
+    // print("User ID: $idUser");
 
     if (idUser != null) {
       double? balance = await expenseService.getTotalExpenses(idUser);
@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
         totalBalance = balance;
       });
     } else {
-      print("User ID tidak ditemukan.");
+      // print("User ID tidak ditemukan.");
     }
   }
 
@@ -63,39 +63,45 @@ class _HomePageState extends State<HomePage> {
             });
           },
           children: [
-            Padding(
-              padding: const EdgeInsets.all(10.0),
+            RefreshIndicator(
+              onRefresh: () async {
+                getBalance();
+              },
               child: SingleChildScrollView(
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Total Pengeluaran",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w500,
+                physics: AlwaysScrollableScrollPhysics(),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Total Pengeluaran",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
                             ),
-                          ),
-                          Text(
-                            "Rp. $totalBalance",
-                            style: TextStyle(
-                              fontSize: 40,
-                              fontWeight: FontWeight.bold,
+                            Text(
+                              "Rp. ${totalBalance?.toStringAsFixed(2)}",
+                              style: TextStyle(
+                                fontSize: 40,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                        ],
+                          ],
+                        ),
                       ),
-                    ),
-                    SizedBox(height: 10),
-                    ChartsCard(),
-                    SizedBox(height: 10),
-                    HistoryList(),
-                  ],
+                      SizedBox(height: 10),
+                      ChartsCard(),
+                      SizedBox(height: 10),
+                      HistoryList(),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -103,6 +109,7 @@ class _HomePageState extends State<HomePage> {
             AccountPages(),
           ],
         ),
+
         bottomNavigationBar: BottomNavigationBar(
           items: const <BottomNavigationBarItem>[
             BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
