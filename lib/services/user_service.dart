@@ -54,9 +54,10 @@ class UserService {
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = jsonDecode(response.body);
       String username = responseData['user']['username'] ?? "Guest";
+      int id = responseData['user']['id_user'] ?? "Guest";
 
       // print("Username dari server: $username");
-      await saveUserData(username);
+      await saveUserData(username, id);
 
       return User.fromJson(responseData['user']);
     } else {
@@ -66,9 +67,10 @@ class UserService {
   }
 
   //save username
-  Future<void> saveUserData(String username) async {
+  Future<void> saveUserData(String username, int id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("username", username);
+    await prefs.setInt("id_user", id);
     // print("USER NAME TERSIMPAN : $username");
   }
 
@@ -76,7 +78,16 @@ class UserService {
   Future<String?> getUsername() async {
     final prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString("username");
-    // print("username nya adalah $username");
+    print("username nya adalah $username");
     return username;
   }
+
+  //get user id
+  Future<int?> getUserId() async {
+    final prefs = await SharedPreferences.getInstance();
+    int? idUser = prefs.getInt("id_user");
+    // print("user id nya adalah $idUser");
+    return idUser;
+  }
+
 }

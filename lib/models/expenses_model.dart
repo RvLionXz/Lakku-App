@@ -25,4 +25,6 @@ class Expenses {
       date: json['date'],
     );
   }
+
+  Object? toJson() {}
 }

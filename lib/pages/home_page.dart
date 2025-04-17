@@ -3,6 +3,8 @@ import 'package:lakku_app/components/charts_card.dart';
 import 'package:lakku_app/components/history_list.dart';
 import 'package:lakku_app/pages/account_page.dart';
 import 'add_expanses.dart';
+import 'package:lakku_app/services/expense_service.dart';
+import 'package:lakku_app/services/user_service.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -12,11 +14,35 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  double? totalBalance = 0;
   int _selectedIndex = 0;
   final PageController _pageController = PageController();
 
+  void getBalance() async {
+    ExpenseService expenseService = ExpenseService();
+    UserService userService = UserService();
+
+    final idUser = await userService.getUserId();
+    print("User ID: $idUser"); // Cek apakah id_user terambil dengan benar
+
+    if (idUser != null) {
+      double? balance = await expenseService.getTotalExpenses(idUser);
+      setState(() {
+        totalBalance = balance;
+      });
+    } else {
+      print("User ID tidak ditemukan.");
+    }
+  }
+
   void _onItemTapped(int index) {
     _pageController.jumpToPage(index);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getBalance();
   }
 
   @override
@@ -56,7 +82,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Text(
-                            "Rp. ",
+                            "Rp. $totalBalance",
                             style: TextStyle(
                               fontSize: 40,
                               fontWeight: FontWeight.bold,
@@ -74,7 +100,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             AddPages(),
-            AccountPages()
+            AccountPages(),
           ],
         ),
         bottomNavigationBar: BottomNavigationBar(

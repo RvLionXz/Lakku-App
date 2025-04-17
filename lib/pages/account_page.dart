@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:lakku_app/models/users_model.dart';
 import 'package:lakku_app/services/user_service.dart';
 
 class AccountPages extends StatefulWidget {
