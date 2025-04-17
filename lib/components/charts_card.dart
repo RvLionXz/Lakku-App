@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:lakku_app/services/expense_service.dart';
+import 'package:lakku_app/services/user_service.dart';
 
 class ChartsCard extends StatefulWidget {
   const ChartsCard({super.key});
@@ -25,19 +27,19 @@ class _ChartsCardState extends State<ChartsCard> {
                   sections: [
                     PieChartSectionData(
                       color: Colors.blue,
-                      value: 0,
+                      value: 10,
                       title: 'a%',
                       radius: 50,
                     ),
                     PieChartSectionData(
                       color: Colors.yellow,
-                      value: 0,
+                      value: 10,
                       title: 'a%',
                       radius: 50,
                     ),
                     PieChartSectionData(
                       color: Colors.red,
-                      value: 0,
+                      value: 10,
                       title: 'a%',
                       radius: 50,
                     ),

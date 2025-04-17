@@ -1,7 +1,7 @@
 class Expenses {
   final int id;
   final int userId;
-  final int categoryId;
+  final String category;
   final String description;
   final double amount;
   final DateTime date;
@@ -9,7 +9,7 @@ class Expenses {
   Expenses({
     required this.id,
     required this.userId,
-    required this.categoryId,
+    required this.category,
     required this.description,
     required this.amount,
     required this.date,
@@ -19,12 +19,20 @@ class Expenses {
     return Expenses(
       id: json['id_expenses'],
       userId: json['id_user'],
-      categoryId: json['id_category'],
+      category: json['category'],
       description: json['description'],
       amount: json['amount'],
-      date: json['date'],
+      date: DateTime.parse(json['date']),
     );
   }
 
-  Object? toJson() {}
+  Map<String, dynamic> toJson() {
+    return {
+      'id_user': userId,
+      'category': category,
+      'description': description,
+      'amount': amount,
+      'date': date.toIso8601String(),
+    };
+  }
 }
