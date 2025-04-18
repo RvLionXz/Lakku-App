@@ -67,7 +67,7 @@ class UserService {
     }
   }
 
-  //save username
+  //save data user
   Future<void> saveUserData(String username, int id) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("username", username);

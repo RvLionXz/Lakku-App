@@ -20,7 +20,7 @@ class Expenses {
       id: json['id_expenses'],
       userId: json['id_user'],
       category: json['category'],
-      description: json['description'],
+      description: json['description']?? "",
       amount:
           json['amount'] != null
               ? double.tryParse(json['amount'].toString())

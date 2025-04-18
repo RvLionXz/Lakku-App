@@ -46,15 +46,23 @@ class ExpenseService {
   }
 
   // Add expenses
-  Future<void> addExpenses(Expenses expense) async {
+  Future<void> addExpenses(int id_user, double amount, String category, String description) async {
     final response = await http.post(
       Uri.parse("$baseUrl/expenses"),
       headers: {"Content-Type": "application/json"},
-      body: jsonEncode(expense.toJson()),
+      body: jsonEncode({
+        "id_user": id_user,
+        "amount": amount,
+        "category": category,
+        "description": description
+      }),
     );
 
     if (response.statusCode != 200) {
+      print("DATA NYA TIDAK BERHASIL DI TAMBAHKAN : ${response.statusCode}");
       throw Exception("Failed to add expense");
+    }else {
+      print("DATA BERHASIL DITAMBAHKAN : $category");
     }
   }
 }
