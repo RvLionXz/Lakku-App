@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:lakku_app/models/expenses_model.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
+import 'package:intl/intl.dart';
 
 class HistoryList extends StatefulWidget {
   const HistoryList({super.key});
@@ -34,6 +35,16 @@ class _HistoryListState extends State<HistoryList> {
       print("History tidak ditemukan.");
       throw Exception("Failed to load data");
     }
+  }
+
+  //Format ke Rupiah
+  String formatRupiah(dynamic amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return formatter.format(double.tryParse(amount.toString()) ?? 0);
   }
 
   @override
@@ -132,12 +143,23 @@ class _HistoryListState extends State<HistoryList> {
                                     ],
                                   ),
                                 ),
-                                Text(
-                                  "Rp. ${item.amount?.toStringAsFixed(0) ?? '0'}",
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      formatRupiah(item.amount),
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+
+                                    Text(
+                                      DateFormat(
+                                        'dd MMMM yyyy, HH:mm',
+                                      ).format(item.date.toLocal()),
+                                    ),
+                                  ],
                                 ),
                               ],
                             ),

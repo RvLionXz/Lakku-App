@@ -5,6 +5,7 @@ import 'package:lakku_app/pages/account_page.dart';
 import 'add_expanses.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,6 +41,16 @@ class _HomePageState extends State<HomePage> {
 
   void _onItemTapped(int index) {
     _pageController.jumpToPage(index);
+  }
+
+  //Format ke Rupiah
+  String formatRupiah(dynamic amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return formatter.format(double.tryParse(amount.toString()) ?? 0);
   }
 
   @override
@@ -90,7 +101,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "Rp. ${totalBalance?.toStringAsFixed(0)}",
+                              formatRupiah(totalBalance),
                               style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold,

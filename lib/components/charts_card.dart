@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
+import 'package:intl/intl.dart';
 
 class ChartsCard extends StatefulWidget {
   const ChartsCard({super.key});
@@ -60,6 +61,16 @@ class _ChartsCardState extends State<ChartsCard> {
     }
   }
 
+  //Format ke Rupiah
+  String formatRupiah(dynamic amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return formatter.format(double.tryParse(amount.toString()) ?? 0);
+  }
+
   @override
   void initState() {
     super.initState();
@@ -71,12 +82,10 @@ class _ChartsCardState extends State<ChartsCard> {
     return Card(
       child:
           isLoading
-              ? Expanded(
-                child: Container(
-                  color: Colors.white,
-                  child: const Center(
-                    child: CircularProgressIndicator(color: Colors.blue),
-                  ),
+              ? Container(
+                color: Colors.white,
+                child: const Center(
+                  child: CircularProgressIndicator(color: Colors.blue),
                 ),
               )
               : Container(
@@ -132,9 +141,9 @@ class _ChartsCardState extends State<ChartsCard> {
                       children: [
                         Text(""),
                         SizedBox(height: 10),
-                        Text("Rp. ${makanan.toStringAsFixed(0)}"),
-                        Text("Rp. ${transportasi.toStringAsFixed(0)}"),
-                        Text("Rp. ${lainnya.toStringAsFixed(0)}"),
+                        Text(formatRupiah(makanan)),
+                        Text(formatRupiah(transportasi)),
+                        Text(formatRupiah(lainnya)),
                       ],
                     ),
                   ],
