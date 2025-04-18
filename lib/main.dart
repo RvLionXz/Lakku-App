@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 import 'pages/home_page.dart';
 import 'pages/add_expanses.dart';
 import 'pages/login_page.dart';
+import 'package:lakku_app/services/user_service.dart';
 
-void main() {
-  runApp(const MyApp());
+Future<bool> checkLoginStatus() async {
+  UserService userService = UserService();
+  final idUser = await userService.getUserId();
+  return idUser != null;
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  bool isLoggedIn = await checkLoginStatus();
+
+  runApp(MaterialApp(home: isLoggedIn ? HomePage() : LoginPage()));
 }
 
 class MyApp extends StatefulWidget {
@@ -20,9 +30,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: LoginPage(),
-      routes: {
-        '/add': (context) => AddPages(),
-      },
+      routes: {'/add': (context) => AddPages()},
     );
   }
 }

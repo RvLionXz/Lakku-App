@@ -74,7 +74,7 @@ class _HistoryListState extends State<HistoryList> {
                     ),
                   ),
                   SizedBox(
-                    height: 500,
+                    height: 440,
                     child: ListView.builder(
                       itemCount: historyList.length,
                       itemBuilder: (context, index) {
@@ -157,7 +157,7 @@ class _HistoryListState extends State<HistoryList> {
                                     Text(
                                       DateFormat(
                                         'dd MMMM yyyy, HH:mm',
-                                      ).format(item.date.toLocal()),
+                                      ).format(item.date),
                                     ),
                                   ],
                                 ),

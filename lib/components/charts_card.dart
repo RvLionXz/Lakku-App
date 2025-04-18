@@ -131,9 +131,35 @@ class _ChartsCardState extends State<ChartsCard> {
                           style: TextStyle(fontWeight: FontWeight.w500),
                         ),
                         SizedBox(height: 10),
-                        Text("Makanan"),
-                        Text("Transportasi"),
-                        Text("Lainnya"),
+                        Row(
+                          children: [
+                            Container(
+                              height: 10,
+                              width: 10,
+                              color: Colors.blue,
+                            ),
+                            SizedBox(width: 5),
+                            Text("Makanan"),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(
+                              height: 10,
+                              width: 10,
+                              color: Colors.yellow,
+                            ),
+                            SizedBox(width: 5),
+                            Text("Transportasi"),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Container(height: 10, width: 10, color: Colors.red),
+                            SizedBox(width: 5),
+                            Text("Lainnya"),
+                          ],
+                        ),
                       ],
                     ),
                     Column(

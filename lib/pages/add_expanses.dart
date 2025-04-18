@@ -3,6 +3,7 @@ import 'package:lakku_app/components/text_field.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
 import 'package:lakku_app/pages/home_page.dart';
+import 'package:intl/intl.dart';
 
 class AddPages extends StatefulWidget {
   const AddPages({super.key});
@@ -60,6 +61,16 @@ class _AddPagesState extends State<AddPages> {
     }
   }
 
+    //Format ke Rupiah
+  String formatRupiah(dynamic amount) {
+    final formatter = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp ',
+      decimalDigits: 0,
+    );
+    return formatter.format(double.tryParse(amount.toString()) ?? 0);
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -70,7 +81,7 @@ class _AddPagesState extends State<AddPages> {
           padding: EdgeInsets.all(10),
           child: Column(
             children: [
-              NormalForm(
+              NumberForm(
                 label: "Amount",
                 controller: amountController,
                 obscureText: false,

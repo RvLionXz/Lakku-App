@@ -72,7 +72,6 @@ class UserService {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("username", username);
     await prefs.setInt("id_user", id);
-    // print("USER NAME TERSIMPAN : $username");
   }
 
   //get username
@@ -90,5 +89,4 @@ class UserService {
     // print("user id nya adalah $idUser");
     return idUser;
   }
-
 }
