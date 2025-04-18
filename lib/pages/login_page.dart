@@ -24,7 +24,7 @@ class _LoginPageState extends State<LoginPage> {
       passwordController.text,
     );
 
-    if (response != null) {
+    if (response != null && mounted) {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(builder: (context) => HomePage()),

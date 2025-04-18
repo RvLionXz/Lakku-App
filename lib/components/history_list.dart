@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:lakku_app/models/expenses_model.dart';
+import 'package:lakku_app/services/expense_service.dart';
+import 'package:lakku_app/services/user_service.dart';
 
 class HistoryList extends StatefulWidget {
   const HistoryList({super.key});
@@ -8,58 +11,143 @@ class HistoryList extends StatefulWidget {
 }
 
 class _HistoryListState extends State<HistoryList> {
+  List<Expenses> historyList = [];
+  bool isLoading = false;
+
+  void getHistory() async {
+    isLoading = true;
+    ExpenseService expenseService = ExpenseService();
+    UserService userService = UserService();
+
+    final idUser = await userService.getUserId();
+
+    if (idUser != null) {
+      final expenses = await expenseService.getExpenses(idUser);
+
+      if (mounted) {
+        setState(() {
+          historyList = expenses;
+          isLoading = false;
+        });
+      }
+    } else {
+      print("History tidak ditemukan.");
+      throw Exception("Failed to load data");
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    getHistory();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: [
-        Align(
-          alignment: Alignment.topLeft,
-          child: Column(
-            children: [Text("History", style: TextStyle(fontSize: 18))],
-          ),
-        ),
-        SizedBox(
-          height: 500,
-          child: ListView.builder(
-            itemCount: 20,
-            itemBuilder: (context, index) {
-              return Container(
-                decoration: BoxDecoration(
-                  border: Border(
-                    bottom: BorderSide(color: Colors.black, width: 1),
-                  ),
+    return SafeArea(
+      child:
+          isLoading
+              ? Container(
+                color: Colors.white,
+                child: const Center(
+                  child: CircularProgressIndicator(color: Colors.blue),
                 ),
-                margin: EdgeInsets.symmetric(horizontal: 5, vertical: 1),
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Row(
-                    children: [
-                      Icon(Icons.food_bank, size: 50, color: Color(0xFF6665E7)),
-                      SizedBox(width: 10),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Makanan",
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18,
-                              ),
+              )
+              : Column(
+                children: [
+                  Align(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Text("History", style: TextStyle(fontSize: 18)),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 500,
+                    child: ListView.builder(
+                      itemCount: historyList.length,
+                      itemBuilder: (context, index) {
+                        var item = historyList[index];
+                        Icon categoryIcon;
+                        switch (item.category.toLowerCase()) {
+                          case 'makanan':
+                            categoryIcon = Icon(
+                              Icons.food_bank,
+                              size: 50,
+                              color: Color(0xFF6665E7),
+                            );
+                            break;
+                          case 'transportasi':
+                            categoryIcon = Icon(
+                              Icons.directions_car,
+                              size: 50,
+                              color: Color(0xFF6665E7),
+                            );
+                            break;
+                          case 'lainnya':
+                            categoryIcon = Icon(
+                              Icons.other_houses,
+                              size: 50,
+                              color: Color(0xFF6665E7),
+                            );
+                            break;
+                          default:
+                            categoryIcon = Icon(
+                              Icons.help,
+                              size: 50,
+                              color: Color(0xFF6665E7),
+                            );
+                            break;
+                        }
+
+                        return Container(
+                          decoration: BoxDecoration(
+                            border: Border(
+                              bottom: BorderSide(color: Colors.black, width: 1),
                             ),
-                            Text("Note untuk makanan"),
-                          ],
-                        ),
-                      ),
-                      Text("Rp. 100.000", style: TextStyle(fontSize: 18)),
-                    ],
+                          ),
+                          margin: EdgeInsets.symmetric(
+                            horizontal: 5,
+                            vertical: 1,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Row(
+                              children: [
+                                categoryIcon,
+                                SizedBox(width: 10),
+                                Expanded(
+                                  child: Column(
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        item.category,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 18,
+                                        ),
+                                      ),
+                                      Text(item.description),
+                                    ],
+                                  ),
+                                ),
+                                Text(
+                                  "Rp. ${item.amount?.toStringAsFixed(0) ?? '0'}",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    ),
                   ),
-                ),
-              );
-            },
-          ),
-        ),
-      ],
+                ],
+              ),
     );
   }
 }

@@ -27,9 +27,12 @@ class _HomePageState extends State<HomePage> {
 
     if (idUser != null) {
       double? balance = await expenseService.getTotalExpenses(idUser);
-      setState(() {
-        totalBalance = balance;
-      });
+
+      if (mounted) {
+        setState(() {
+          totalBalance = balance;
+        });
+      }
     } else {
       // print("User ID tidak ditemukan.");
     }
@@ -52,7 +55,7 @@ class _HomePageState extends State<HomePage> {
       home: Scaffold(
         backgroundColor: Color(0xFFF5F5F5),
         appBar: AppBar(
-          title: Text("Lakku"),
+          title: Image.asset("assets/images/Lakku Logo.png", width: 100),
           backgroundColor: Color(0xFFF5F5F5),
         ),
         body: PageView(
@@ -87,7 +90,7 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                             Text(
-                              "Rp. ${totalBalance?.toStringAsFixed(2)}",
+                              "Rp. ${totalBalance?.toStringAsFixed(0)}",
                               style: TextStyle(
                                 fontSize: 40,
                                 fontWeight: FontWeight.bold,
