@@ -14,11 +14,13 @@ class HistoryList extends StatefulWidget {
 class _HistoryListState extends State<HistoryList> {
   List<Expenses> historyList = [];
   bool isLoading = false;
+  bool isButtonPress = false;
+
+  ExpenseService expenseService = ExpenseService();
+  UserService userService = UserService();
 
   void getHistory() async {
     isLoading = true;
-    ExpenseService expenseService = ExpenseService();
-    UserService userService = UserService();
 
     final idUser = await userService.getUserId();
 
@@ -160,6 +162,18 @@ class _HistoryListState extends State<HistoryList> {
                                       ).format(item.date),
                                     ),
                                   ],
+                                ),
+                                IconButton(
+                                  onPressed: () async{
+                                    // if(isButtonPress) return;
+                                    setState(() {
+                                      isButtonPress = true;
+                                    });
+                                    await expenseService.deleteExpenses(item.id);
+                                    getHistory();
+                                    
+                                  },
+                                  icon: Icon(Icons.delete),
                                 ),
                               ],
                             ),

@@ -65,4 +65,18 @@ class ExpenseService {
       print("DATA BERHASIL DITAMBAHKAN : $category");
     }
   }
+
+  // Delete expenses
+  Future<void> deleteExpenses(int expenseId) async {
+    final response = await http.delete(
+      Uri.parse("$baseUrl/expenses/$expenseId")
+    );
+
+    if(response.statusCode == 200) {
+      print("Data berhasil dihapus");
+    }else{
+      print("Data gagal dihapus : ${response.statusCode}");
+      // throw Exception("Data gagal dihapus");
+    }
+  }
 }

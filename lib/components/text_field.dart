@@ -42,6 +42,7 @@ class NormalForm extends StatelessWidget {
       ),
       keyboardType: TextInputType.text,
       style: TextStyle(fontSize: 16, color: Colors.black),
+      
     );
   }
 }

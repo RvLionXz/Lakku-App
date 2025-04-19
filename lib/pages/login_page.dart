@@ -41,6 +41,7 @@ class _LoginPageState extends State<LoginPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        appBar: AppBar(backgroundColor: Color(0xFFF5F5F5)),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(10),
