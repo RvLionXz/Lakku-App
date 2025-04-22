@@ -89,4 +89,10 @@ class UserService {
     // print("user id nya adalah $idUser");
     return idUser;
   }
+
+  //remove user id
+  Future<void> logout() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.remove("id_user");
+  }
 }
