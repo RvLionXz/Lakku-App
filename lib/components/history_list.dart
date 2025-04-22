@@ -171,7 +171,7 @@ class _HistoryListState extends State<HistoryList> {
                                     });
                                     await expenseService.deleteExpenses(item.id);
                                     getHistory();
-                                    
+                                    userService.fetchUser();
                                   },
                                   icon: Icon(Icons.delete),
                                 ),

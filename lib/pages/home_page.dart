@@ -17,11 +17,11 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   double? totalBalance = 0;
   int _selectedIndex = 0;
+  UserService userService = UserService();
   final PageController _pageController = PageController();
 
   void getBalance() async {
     ExpenseService expenseService = ExpenseService();
-    UserService userService = UserService();
 
     final idUser = await userService.getUserId();
     // print("User ID: $idUser");
@@ -57,6 +57,7 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     getBalance();
+    userService.fetchUser();
   }
 
   @override

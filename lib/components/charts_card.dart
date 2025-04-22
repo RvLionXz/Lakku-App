@@ -54,6 +54,7 @@ class _ChartsCardState extends State<ChartsCard> {
 
       setState(() {
         isLoading = false;
+        userService.fetchUser();
       });
     } else {
       print("User ID tidak ditemukan.");
