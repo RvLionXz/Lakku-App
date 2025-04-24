@@ -3,6 +3,7 @@ import 'package:lakku_app/models/expenses_model.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
 import 'package:intl/intl.dart';
+import 'package:lakku_app/pages/home_page.dart';
 
 class HistoryList extends StatefulWidget {
   const HistoryList({super.key});
@@ -29,7 +30,8 @@ class _HistoryListState extends State<HistoryList> {
 
       if (mounted) {
         setState(() {
-          historyList = expenses;
+          final expensesReversed = expenses.reversed.toList();
+          historyList = expensesReversed;
           isLoading = false;
         });
       }
@@ -164,14 +166,25 @@ class _HistoryListState extends State<HistoryList> {
                                   ],
                                 ),
                                 IconButton(
-                                  onPressed: () async{
+                                  onPressed: () async {
                                     // if(isButtonPress) return;
                                     setState(() {
                                       isButtonPress = true;
                                     });
-                                    await expenseService.deleteExpenses(item.id);
+                                    await expenseService.deleteExpenses(
+                                      item.id,
+                                    );
                                     getHistory();
-                                    userService.fetchUser();
+                                    setState(() {
+                                      userService.fetchUser();
+                                      Navigator.pushReplacement(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder:
+                                              (context) => const HomePage(),
+                                        ),
+                                      );
+                                    });
                                   },
                                   icon: Icon(Icons.delete),
                                 ),
