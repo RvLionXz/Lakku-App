@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:lakku_app/services/user_service.dart';
 import 'package:lakku_app/pages/login_page.dart';
+import 'package:lakku_app/components/mountly_history.dart';
 
 class AccountPages extends StatefulWidget {
   const AccountPages({super.key});
@@ -11,12 +12,20 @@ class AccountPages extends StatefulWidget {
 
 class _AccountPagesState extends State<AccountPages> {
   String username = "";
+  String email = "";
   UserService userService = UserService();
 
   void loadUsername() async {
-    final userData = await userService.getUsername();
+    final userName = await userService.getUsername();
     setState(() {
-      username = userData ?? "Guest";
+      username = userName ?? "Guest";
+    });
+  }
+
+  void loadEmail() async {
+    final userEmail = await userService.getEmail();
+    setState(() {
+      email = userEmail ?? "no email";
     });
   }
 
@@ -25,7 +34,7 @@ class _AccountPagesState extends State<AccountPages> {
     setState(() {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const LoginPage()) 
+        MaterialPageRoute(builder: (context) => const LoginPage()),
       );
     });
   }
@@ -34,6 +43,7 @@ class _AccountPagesState extends State<AccountPages> {
   void initState() {
     super.initState();
     loadUsername();
+    loadEmail();
   }
 
   @override
@@ -46,24 +56,45 @@ class _AccountPagesState extends State<AccountPages> {
           padding: const EdgeInsets.all(10),
           child: Center(
             child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Icon(Icons.face, size: 150, color: Colors.grey.shade400),
-                Text("Username"),
+                Text("User Information"),
                 Text(
                   username,
-                  style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+                  style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold),
                 ),
-                SizedBox(height: 20,),
+                Text(email),
+                SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 40,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Color(0xFF6665E7),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Ringkasan Pengeluaran Bulanan",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(height: 10),
+                MountlyHistory(),
+                SizedBox(height: 20),
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
                     onPressed: handleLogout,
                     style: ElevatedButton.styleFrom(
-                      side: BorderSide(
-                        width: 2,
-                        color: Color(0xFF6665E7)
-                      ),
+                      side: BorderSide(width: 2, color: Color(0xFF6665E7)),
                       backgroundColor: Colors.white,
                       foregroundColor: Colors.black,
                       elevation: 0,

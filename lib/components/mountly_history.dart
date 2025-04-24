@@ -1,19 +1,20 @@
 import 'package:flutter/material.dart';
-import 'package:lakku_app/models/expenses_model.dart';
+import 'package:lakku_app/models/monthly_summary%20.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
 import 'package:intl/intl.dart';
 import 'package:lakku_app/pages/home_page.dart';
+import 'package:lakku_app/pages/account_page.dart';
 
-class HistoryList extends StatefulWidget {
-  const HistoryList({super.key});
+class MountlyHistory extends StatefulWidget {
+  const MountlyHistory({super.key});
 
   @override
-  State<HistoryList> createState() => _HistoryListState();
+  State<MountlyHistory> createState() => _MountlyHistoryState();
 }
 
-class _HistoryListState extends State<HistoryList> {
-  List<Expenses> historyList = [];
+class _MountlyHistoryState extends State<MountlyHistory> {
+  List<MonthlySummary> historyList = [];
   bool isLoading = false;
   bool isButtonPress = false;
 
@@ -26,7 +27,7 @@ class _HistoryListState extends State<HistoryList> {
     final idUser = await userService.getUserId();
 
     if (idUser != null) {
-      final expenses = await expenseService.getExpenses(idUser);
+      final expenses = await expenseService.getMountlyExpenses(idUser);
 
       if (mounted) {
         setState(() {
@@ -36,7 +37,6 @@ class _HistoryListState extends State<HistoryList> {
         });
       }
     } else {
-      print("History tidak ditemukan.");
       throw Exception("Failed to load data");
     }
   }
@@ -70,51 +70,12 @@ class _HistoryListState extends State<HistoryList> {
               )
               : Column(
                 children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text("History", style: TextStyle(fontSize: 18)),
-                    ),
-                  ),
                   SizedBox(
-                    height: 440,
+                    height: 300,
                     child: ListView.builder(
                       itemCount: historyList.length,
                       itemBuilder: (context, index) {
                         var item = historyList[index];
-                        Icon categoryIcon;
-                        switch (item.category.toLowerCase()) {
-                          case 'makanan':
-                            categoryIcon = Icon(
-                              Icons.food_bank,
-                              size: 50,
-                              color: Color(0xFF6665E7),
-                            );
-                            break;
-                          case 'transportasi':
-                            categoryIcon = Icon(
-                              Icons.directions_car,
-                              size: 50,
-                              color: Color(0xFF6665E7),
-                            );
-                            break;
-                          case 'lainnya':
-                            categoryIcon = Icon(
-                              Icons.other_houses,
-                              size: 50,
-                              color: Color(0xFF6665E7),
-                            );
-                            break;
-                          default:
-                            categoryIcon = Icon(
-                              Icons.help,
-                              size: 50,
-                              color: Color(0xFF6665E7),
-                            );
-                            break;
-                        }
-
                         return Container(
                           decoration: BoxDecoration(
                             border: Border(
@@ -129,7 +90,6 @@ class _HistoryListState extends State<HistoryList> {
                             padding: const EdgeInsets.all(10.0),
                             child: Row(
                               children: [
-                                categoryIcon,
                                 SizedBox(width: 10),
                                 Expanded(
                                   child: Column(
@@ -137,13 +97,12 @@ class _HistoryListState extends State<HistoryList> {
                                         CrossAxisAlignment.start,
                                     children: [
                                       Text(
-                                        item.category,
+                                        item.monthName,
                                         style: TextStyle(
                                           fontWeight: FontWeight.w500,
                                           fontSize: 18,
                                         ),
                                       ),
-                                      Text(item.description),
                                     ],
                                   ),
                                 ),
@@ -151,42 +110,13 @@ class _HistoryListState extends State<HistoryList> {
                                   crossAxisAlignment: CrossAxisAlignment.end,
                                   children: [
                                     Text(
-                                      formatRupiah(item.amount),
+                                      formatRupiah(item.totalAmount.toInt()),
                                       style: TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
                                       ),
                                     ),
-
-                                    Text(
-                                      DateFormat(
-                                        'dd MMMM yyyy,HH:mm',
-                                      ).format(item.date),
-                                    ),
                                   ],
-                                ),
-                                IconButton(
-                                  onPressed: () async {
-                                    // if(isButtonPress) return;
-                                    setState(() {
-                                      isButtonPress = true;
-                                    });
-                                    await expenseService.deleteExpenses(
-                                      item.id,
-                                    );
-                                    getHistory();
-                                    setState(() {
-                                      userService.fetchUser();
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => const HomePage(),
-                                        ),
-                                      );
-                                    });
-                                  },
-                                  icon: Icon(Icons.delete),
                                 ),
                               ],
                             ),

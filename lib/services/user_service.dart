@@ -55,10 +55,11 @@ class UserService {
     if (response.statusCode == 200) {
       Map<String, dynamic> responseData = jsonDecode(response.body);
       String username = responseData['user']['username'] ?? "Guest";
-      int id = responseData['user']['id_user'] ?? "Guest";
+      int id = responseData['user']['id_user'] ?? "no id";
+      String email = responseData['user']['email'] ?? "no email";
 
       // print("Username dari server: $username");
-      await saveUserData(username, id);
+      await saveUserData(username, id, email);
 
       return User.fromJson(responseData['user']);
     } else {
@@ -68,17 +69,18 @@ class UserService {
   }
 
   //save data user
-  Future<void> saveUserData(String username, int id) async {
+  Future<void> saveUserData(String username, int id, String email) async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setString("username", username);
     await prefs.setInt("id_user", id);
+    await prefs.setString("email", email);
   }
 
   //get username
   Future<String?> getUsername() async {
     final prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString("username");
-    print("username nya adalah $username");
+    // print("username nya adalah $username");
     return username;
   }
 
@@ -94,5 +96,13 @@ class UserService {
   Future<void> logout() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.remove("id_user");
+  }
+
+  //get user email
+  Future<String?> getEmail() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? userEmail = prefs.getString("email");
+    print("USER EMAIL IS $userEmail");
+    return userEmail;
   }
 }

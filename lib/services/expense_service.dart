@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:lakku_app/models/expenses_model.dart';
+import 'package:lakku_app/models/monthly_summary .dart';
 
 class ExpenseService {
   final String baseUrl = "http://47.250.187.233:80";
@@ -11,7 +12,7 @@ class ExpenseService {
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
-      print(data);
+      // print(data);
       return data.map((json) => Expenses.fromJson(json)).toList();
     } else {
       throw Exception("Failed to load expenses");
@@ -20,13 +21,15 @@ class ExpenseService {
 
   //get expenses
   Future<List<Expenses>> getExpenses(int userId) async {
-    final response = await http.get(Uri.parse("$baseUrl/expenses/$userId"));
+    final response = await http.get(
+      Uri.parse("$baseUrl/expenses/user/$userId"),
+    );
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => Expenses.fromJson(json)).toList();
     } else {
-      print("GAGAL TES : $response.statusCode");
+      // print("GAGAL TES : $response.statusCode");
       throw Exception("Gagal");
     }
   }
@@ -45,8 +48,27 @@ class ExpenseService {
     }
   }
 
+  // Get Mountly Expenses
+  Future<List<MonthlySummary>> getMountlyExpenses(int userId) async {
+    final response = await http.get(
+      Uri.parse("$baseUrl/expenses/monthly/user/$userId"),
+    );
+    if (response.statusCode == 200) {
+      List<dynamic> data = jsonDecode(response.body);
+      print(data);
+      return data.map((json) => MonthlySummary.fromJson(json)).toList();
+    }else {
+      throw Exception("Error ${response.statusCode}");
+    }
+  }
+
   // Add expenses
-  Future<void> addExpenses(int id_user, double amount, String category, String description) async {
+  Future<void> addExpenses(
+    int id_user,
+    double amount,
+    String category,
+    String description,
+  ) async {
     final response = await http.post(
       Uri.parse("$baseUrl/expenses"),
       headers: {"Content-Type": "application/json"},
@@ -54,29 +76,29 @@ class ExpenseService {
         "id_user": id_user,
         "amount": amount,
         "category": category,
-        "description": description
+        "description": description,
       }),
     );
 
     if (response.statusCode != 200) {
-      print("DATA NYA TIDAK BERHASIL DI TAMBAHKAN : ${response.statusCode}");
+      // print("DATA NYA TIDAK BERHASIL DI TAMBAHKAN : ${response.statusCode}");
       throw Exception("Failed to add expense");
-    }else {
-      print("DATA BERHASIL DITAMBAHKAN : $category");
+    } else {
+      // print("DATA BERHASIL DITAMBAHKAN : $category");
     }
   }
 
   // Delete expenses
   Future<void> deleteExpenses(int expenseId) async {
     final response = await http.delete(
-      Uri.parse("$baseUrl/expenses/$expenseId")
+      Uri.parse("$baseUrl/expenses/$expenseId"),
     );
 
-    if(response.statusCode == 200) {
-      print("Data berhasil dihapus");
-    }else{
-      print("Data gagal dihapus : ${response.statusCode}");
-      // throw Exception("Data gagal dihapus");
+    if (response.statusCode == 200) {
+      // print("Data berhasil dihapus");
+    } else {
+      // print("Data gagal dihapus : ${response.statusCode}");
+      throw Exception("Data gagal dihapus");
     }
   }
 }

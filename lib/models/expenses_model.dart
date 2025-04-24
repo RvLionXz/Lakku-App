@@ -17,10 +17,14 @@ class Expenses {
 
   factory Expenses.fromJson(Map<String, dynamic> json) {
     return Expenses(
-      id: json['id_expenses'],
-      userId: json['id_user'],
+      id:
+          json['id_expenses'] != null
+              ? int.parse(json['id_expenses'].toString())
+              : 0,
+      userId:
+          json['id_user'] != null ? int.parse(json['id_user'].toString()) : 0,
       category: json['category'],
-      description: json['description']?? "",
+      description: json['description'] ?? "",
       amount:
           json['amount'] != null
               ? double.tryParse(json['amount'].toString())
