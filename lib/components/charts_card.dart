@@ -52,10 +52,12 @@ class _ChartsCardState extends State<ChartsCard> {
       transportasiPercent = (transportasi / total) * 100;
       lainnyaPercent = (lainnya / total) * 100;
 
-      setState(() {
-        isLoading = false;
-        userService.fetchUser();
-      });
+      if (mounted) {
+        setState(() {
+          isLoading = false;
+          userService.fetchUser();
+        });
+      }
     } else {
       print("User ID tidak ditemukan.");
       throw Exception("Failed to load data");
