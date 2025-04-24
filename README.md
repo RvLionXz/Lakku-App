@@ -42,7 +42,7 @@ The application consists of several key screens:
 ### Installation
 1. Clone the repository
    ```bash
-   git clone https://github.com/yourusername/lakku.git
+   git clone https://github.com/RvLionXz/Lakku-App
    cd lakku
     flutter pub get
     flutter run
