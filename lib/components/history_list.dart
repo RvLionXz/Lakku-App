@@ -167,24 +167,53 @@ class _HistoryListState extends State<HistoryList> {
                                 ),
                                 IconButton(
                                   onPressed: () async {
-                                    // if(isButtonPress) return;
-                                    setState(() {
-                                      isButtonPress = true;
-                                    });
-                                    await expenseService.deleteExpenses(
-                                      item.id,
+                                    bool confirm = await showDialog(
+                                      context: context,
+                                      builder:
+                                          (context) => AlertDialog(
+                                            content: Text(
+                                              'Yakin ingin menghapus?',
+                                            ),
+                                            actions: [
+                                              TextButton(
+                                                onPressed:
+                                                    () => Navigator.pop(
+                                                      context,
+                                                      false,
+                                                    ),
+                                                child: Text('Batal'),
+                                              ),
+                                              TextButton(
+                                                onPressed:
+                                                    () => Navigator.pop(
+                                                      context,
+                                                      true,
+                                                    ),
+                                                child: Text('Hapus'),
+                                              ),
+                                            ],
+                                          ),
                                     );
-                                    getHistory();
-                                    setState(() {
-                                      userService.fetchUser();
-                                      Navigator.pushReplacement(
-                                        context,
-                                        MaterialPageRoute(
-                                          builder:
-                                              (context) => const HomePage(),
-                                        ),
+
+                                    if (confirm) {
+                                      setState(() {
+                                        isButtonPress = true;
+                                      });
+                                      await expenseService.deleteExpenses(
+                                        item.id,
                                       );
-                                    });
+                                      getHistory();
+                                      setState(() {
+                                        userService.fetchUser();
+                                        Navigator.pushReplacement(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder:
+                                                (context) => const HomePage(),
+                                          ),
+                                        );
+                                      });
+                                    }
                                   },
                                   icon: Icon(Icons.delete),
                                 ),

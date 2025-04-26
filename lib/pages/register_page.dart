@@ -29,7 +29,9 @@ class _RegisterPageState extends State<RegisterPage> {
         context,
         MaterialPageRoute(builder: (context) => LoginPage()),
       );
-    }else {
+    } else if (response == 400) {
+      message = "Email sudah terdaftar!";
+    } else {
       message = "Gagal Registrasi!";
     }
 
@@ -43,6 +45,7 @@ class _RegisterPageState extends State<RegisterPage> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
+        backgroundColor: Color(0xFFF5F5F5),
         body: Center(
           child: Padding(
             padding: const EdgeInsets.all(10),
@@ -103,7 +106,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                 ),
-                
+
                 SizedBox(height: 10),
                 InkWell(
                   onTap: () {

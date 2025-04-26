@@ -3,8 +3,6 @@ import 'package:lakku_app/models/monthly_summary%20.dart';
 import 'package:lakku_app/services/expense_service.dart';
 import 'package:lakku_app/services/user_service.dart';
 import 'package:intl/intl.dart';
-import 'package:lakku_app/pages/home_page.dart';
-import 'package:lakku_app/pages/account_page.dart';
 
 class MountlyHistory extends StatefulWidget {
   const MountlyHistory({super.key});

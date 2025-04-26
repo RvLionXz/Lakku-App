@@ -37,10 +37,10 @@ class UserService {
     if (response.statusCode == 201 || response.statusCode == 200) {
       return "Registrasi berhasil!";
     } else if (response.statusCode == 400) {
-      return "Gagal Registrasi, periksa kembali form registrasi!";
+      return "Email sudah terdaftar!";
     } else {
       print(response.statusCode);
-      return "Registrasi gagal!";
+      return "Gagal Registrasi, periksa kembali form registrasi!";
     }
   }
 
