@@ -30,13 +30,14 @@ class _HistoryListState extends State<HistoryList> {
 
       if (mounted) {
         setState(() {
+          print(expenses.toString());
           final expensesReversed = expenses.reversed.toList();
           historyList = expensesReversed;
           isLoading = false;
         });
       }
     } else {
-      print("History tidak ditemukan.");
+      // print("History tidak ditemukan.");
       throw Exception("Failed to load data");
     }
   }
@@ -55,6 +56,7 @@ class _HistoryListState extends State<HistoryList> {
   void initState() {
     super.initState();
     getHistory();
+    print(historyList);
   }
 
   @override
