@@ -4,7 +4,7 @@
 
 Lakku is a personal expense tracking application designed to help users monitor and manage their finances effectively. The name "Lakku" comes from "Laporan Keuanganku" (My Financial Report), reflecting its purpose as a personal financial management tool.
 
-You can download the application via the following link https://drive.google.com/file/d/1OI3OWDsStTdKLlrJB-5wTDPIEOb6zkcm/view?usp=sharing
+You can download the application via the following link https://drive.google.com/drive/folders/19zPWtNVLjWuubfCXAcrUtyjQONR18yn0?usp=sharing
 
 ## Features
 
