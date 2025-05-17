@@ -31,8 +31,7 @@ class _HistoryListState extends State<HistoryList> {
       if (mounted) {
         setState(() {
           print(expenses.toString());
-          final expensesReversed = expenses.reversed.toList();
-          historyList = expensesReversed;
+          historyList = expenses;
           isLoading = false;
         });
       }

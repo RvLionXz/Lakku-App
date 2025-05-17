@@ -4,7 +4,7 @@ import 'package:lakku_app/models/users_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserService {
-  final String baseUrl = "http://47.250.187.233:80";
+  final String baseUrl = "http://47.250.187.233:3000";
 
   //Get data from API
   Future<List<User>> fetchUser() async {

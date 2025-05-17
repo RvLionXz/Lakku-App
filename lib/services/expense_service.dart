@@ -4,7 +4,7 @@ import 'package:lakku_app/models/expenses_model.dart';
 import 'package:lakku_app/models/monthly_summary .dart';
 
 class ExpenseService {
-  final String baseUrl = "http://47.250.187.233:80";
+  final String baseUrl = "http://47.250.187.233:3000";
 
   // Get data from API
   Future<List<Expenses>> fetchExpenses() async {
@@ -22,14 +22,14 @@ class ExpenseService {
   //get expenses
   Future<List<Expenses>> getExpenses(int userId) async {
     final response = await http.get(
-      Uri.parse("$baseUrl/expenses/user/$userId"),
+      Uri.parse("$baseUrl/expenses/user/$userId/monthly"),
     );
 
     if (response.statusCode == 200) {
       List<dynamic> data = jsonDecode(response.body);
       return data.map((json) => Expenses.fromJson(json)).toList();
     } else {
-      // print("GAGAL TES : $response.statusCode");
+      print("GAGAL TES : $response.statusCode");
       throw Exception("Gagal");
     }
   }
