@@ -30,7 +30,7 @@ class _HistoryListState extends State<HistoryList> {
 
       if (mounted) {
         setState(() {
-          print(expenses.toString());
+          // print(expenses.toString());
           historyList = expenses;
           isLoading = false;
         });
@@ -55,7 +55,7 @@ class _HistoryListState extends State<HistoryList> {
   void initState() {
     super.initState();
     getHistory();
-    print(historyList);
+    // print(historyList);
   }
 
   @override
